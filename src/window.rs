@@ -6,9 +6,10 @@ use crate::config::{Settings, SettingsStore};
 use crate::fl;
 use cosmic::app::Core;
 use cosmic::cosmic_theme::Spacing;
-use cosmic::iced::platform_specific::shell::wayland::commands::popup::{destroy_popup, get_popup};
 use cosmic::iced::window::Id;
 use cosmic::iced::{Subscription, Task};
+use cosmic::surface::action::{app_popup, destroy_popup};
+use cosmic::surface::surface_task;
 use cosmic::widget::{divider, mouse_area, settings, text, toggler, Column};
 use cosmic::Element;
 use zbus::blocking::connection::Builder as ConnectionBuilder;
@@ -253,16 +254,25 @@ impl cosmic::Application for CaffeineApplet {
                 if self.popup.is_none() {
                     self.reload_settings();
                 }
+                // Opened through libcosmic's surface actions rather than iced's
+                // raw `get_popup`, so libcosmic tracks the popup and applies the
+                // theme's frosted (blur) setting to it like the official applets.
                 return if let Some(id) = self.popup.take() {
-                    destroy_popup(id)
+                    surface_task(destroy_popup(id))
                 } else {
-                    let new_id = Id::unique();
-                    self.popup = Some(new_id);
-                    get_popup(self.core.applet.get_popup_settings(
-                        self.core.main_window_id().unwrap(),
-                        new_id,
-                        None,
-                        None,
+                    surface_task(app_popup::<Self>(
+                        |_| cosmic::surface::action::LiveSettings::default(),
+                        |app: &mut Self| {
+                            let new_id = Id::unique();
+                            app.popup = Some(new_id);
+                            app.core.applet.get_popup_settings(
+                                app.core.main_window_id().unwrap(),
+                                new_id,
+                                None,
+                                None,
+                                None,
+                            )
+                        },
                         None,
                     ))
                 };
@@ -272,13 +282,13 @@ impl cosmic::Application for CaffeineApplet {
                     return Task::none();
                 }
                 if let Some(id) = self.popup.take() {
-                    return destroy_popup(id);
+                    return surface_task(destroy_popup(id));
                 }
             }
             Message::Disable => {
                 self.disable();
                 if let Some(id) = self.popup.take() {
-                    return destroy_popup(id);
+                    return surface_task(destroy_popup(id));
                 }
             }
             Message::ToggleInhibit => {
