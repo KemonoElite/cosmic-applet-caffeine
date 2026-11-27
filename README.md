@@ -35,6 +35,40 @@ don't surface applets correctly in COSMIC Store
 ([pop-os/cosmic-store#477](https://github.com/pop-os/cosmic-store/issues/477)),
 so if it isn't showing up, add both as `--user` remotes and it should appear.
 
+### NixOS (flake)
+
+Add the flake to your system flake's inputs:
+
+```nix
+{
+  inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    cosmic-applet-caffeine = {
+      url = "github:KemonoElite/cosmic-applet-caffeine";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+  };
+}
+```
+
+Then import the module and enable it:
+
+```nix
+{
+  imports = [ inputs.cosmic-applet-caffeine.nixosModules.default ];
+  programs.cosmic-applet-caffeine.enable = true;
+}
+```
+
+The package is also available as `packages.<system>.default` and through
+`overlays.default` (as `pkgs.cosmic-applet-caffeine`). To try it without
+installing, run `nix build github:KemonoElite/cosmic-applet-caffeine`.
+`nix develop` gives a shell with the Rust toolchain, clippy, rust-analyzer and
+`just`.
+
+The flake builds against nixos-unstable, because libcosmic needs Rust 1.93 or
+newer.
+
 ### From source
 
 A [justfile](./justfile) is included for the [casey/just](https://github.com/casey/just) command runner.
