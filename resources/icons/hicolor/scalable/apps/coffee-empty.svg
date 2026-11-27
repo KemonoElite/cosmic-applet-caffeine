@@ -1,19 +1,5 @@
-<svg width="16" height="16" viewBox="0 0 16 16" fill="none"
-    xmlns="http://www.w3.org/2000/svg">
-    <g id="applet-coffee-inactive" stroke="#232323" stroke-width="1.5" fill="none"
-        stroke-linejoin="round">
-        <!-- Cup body, hollow. The path is the stroke centerline, inset 0.75 (half
-             the stroke width) from the outer edge so the painted boundary lands on
-             x 2..11, y 6..14 - identical to the solid "on" cup. -->
-        <path d="M 2.75 6.75 L 10.25 6.75 L 10.25 12
-                 A 1.25 1.25 0 0 1 9 13.25
-                 L 4 13.25
-                 A 1.25 1.25 0 0 1 2.75 12 Z" />
-
-        <!-- Handle. Geometry is shared verbatim with the "on" icon so the icon does
-             not appear to shift when a session is toggled. -->
-        <path d="M 10.25 8 A 2 2 0 1 1 10.25 11.5" />
-
-        <!-- No steam: an idle cup. -->
-    </g>
+<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+<!-- Empty mug, no steam: the "off" state. Same outline as the "on" mug, so the
+     icon does not shift when a session is toggled. -->
+<path fill-rule="evenodd" clip-rule="evenodd" d="M2 6.5C2 6.224 2.224 6 2.5 6H11.5C11.776 6 12 6.224 12 6.5V7H12.5C13.881 7 15 8.119 15 9.5C15 10.881 13.881 12 12.5 12H11.6C11.1 13.2 9.9 14 8.5 14H5.5C3.567 14 2 12.433 2 10.5V6.5ZM3.5 7.5V10.5C3.5 11.605 4.395 12.5 5.5 12.5H8.5C9.605 12.5 10.5 11.605 10.5 10.5V7.5H3.5ZM12 8.5V10.5H12.5C13.052 10.5 13.5 10.052 13.5 9.5C13.5 8.948 13.052 8.5 12.5 8.5H12Z" fill="#232323"/>
 </svg>
