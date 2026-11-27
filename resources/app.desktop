@@ -1,10 +1,11 @@
 [Desktop Entry]
 Name=Caffeine Applet
+Comment=Keep the system awake, indefinitely or for a set time
 Type=Application
 Exec=caffeine-applet
 Terminal=false
 Categories=COSMIC;
-Keywords=COSMIC;Iced;
+Keywords=COSMIC;Iced;caffeine;awake;idle;sleep;inhibit;
 Icon=com.github.codevardhan.caffeine-applet-symbolic
 StartupNotify=true
 NoDisplay=true
